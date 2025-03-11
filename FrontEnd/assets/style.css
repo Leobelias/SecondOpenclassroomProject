@@ -186,3 +186,30 @@ footer nav ul {
 	margin: 2em
 }
 
+#portfolio{
+	display:flex;
+	flex-direction: column;
+}
+.filtres {
+	display: flex;
+	justify-content: center;
+}
+
+.filtres button{
+	display: flex;
+	color: #1D6154;
+	font-weight:700;
+	border-radius: 20px;
+	margin: 10px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	padding-right: 22px;
+	padding-left: 22px;
+	border:#1D6154 solid 1.5px;
+	font-family: Syne;
+}
+.filtres button:hover{
+	background-color: #1D6154;
+	color: white;
+	cursor: pointer;
+}
