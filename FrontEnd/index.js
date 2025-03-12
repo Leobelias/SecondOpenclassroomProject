@@ -45,9 +45,9 @@ function displayWorks(works) {
 function DisplayCategories(categories){
     const portfolio = document.querySelector('.filtres');
     let allbutton = document.createElement('button');
-        allbutton.innerHTML = "Tous";
-        allbutton.addEventListener('click', () => displayWorks(allWorks));
-        portfolio.appendChild(allbutton)
+    allbutton.innerHTML = "Tous";
+    allbutton.addEventListener('click', () => displayWorks(allWorks));
+    portfolio.appendChild(allbutton)
      categories.map(categorie => {
         let button = document.createElement('button');
         button.innerHTML = categorie.name;
