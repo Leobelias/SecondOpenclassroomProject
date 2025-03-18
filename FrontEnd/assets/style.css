@@ -169,7 +169,7 @@ margin: auto;
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
 
-input[type="submit"]{
+#submit{
 	font-family: 'Syne';
 	font-weight: 700;
 	color: white;
@@ -232,4 +232,51 @@ text-decoration-thickness: 0%;
 
 #submit:hover{
 	cursor: pointer;
+}
+
+.editmod {
+    background-color: black;
+    color: white;
+    text-align: center;
+    font-size: 16px;
+	padding:20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+	display:none;
+}
+
+.editmod i {
+    font-size: 18px;
+	display: none;
+}
+
+.editmod:hover{
+	cursor: pointer;
+}
+
+.editbtn {
+	font-family:"work Sans";
+    font-size: 12px;
+    color: black;
+    padding: 5px 10px;
+    border-radius: 15px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+	font-weight: 500 ;
+	display: none;
+}
+
+.editbtn i {
+    font-size: 16px;
+    color: black;
+	font-weight: 100;
+	display:none;
+}
+
+header a{
+	text-decoration: none;
+	color:inherit
 }

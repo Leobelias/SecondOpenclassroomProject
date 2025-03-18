@@ -3,6 +3,7 @@ const API_BASE_URL = "http://localhost:5678/api"
 
 let allWorks = [];
 getWorks().then(works => { allWorks = works; });
+document.addEventListener("DOMContentLoaded",Connected);
 
 function getWorks(){
     return fetch (`${API_BASE_URL}/works`)
@@ -26,7 +27,7 @@ function getCategories(){
         response.json())
     .then (categories => {
         console.table(categories);
-        DisplayCategories(categories);
+        displayCategories(categories);
         return categories;
     })
     .catch ((error) => {console.error(error)})
@@ -42,7 +43,7 @@ function displayWorks(works) {
     `).join('');
 }
 
-function DisplayCategories(categories){
+function displayCategories(categories){
     const portfolio = document.querySelector('.filtres');
     let allbutton = document.createElement('button');
     allbutton.innerHTML = "Tous";
@@ -58,3 +59,27 @@ function DisplayCategories(categories){
         portfolio.appendChild(button);
      })
 }
+
+function Connected() {
+    const token = localStorage.getItem("tokenConnexion");
+    if (token) {
+        document.querySelectorAll(".editmod, .editmod i").forEach(element =>  {
+            element.style.display= "flex";
+        })
+        document.querySelectorAll(".editbtn, .editbtn i").forEach(element =>  {
+            element.style.display= "inline-flex";
+        })
+    const loginElement = document.querySelector("nav ul li:nth-child(3)");
+    if (loginElement) {
+            loginElement.textContent = "Logoff";
+            loginElement.style.cursor = "pointer";
+
+            loginElement.addEventListener("click", () => {
+                localStorage.removeItem("tokenConnexion");
+                window.location.reload();
+            });
+        }
+    }
+}
+
+
