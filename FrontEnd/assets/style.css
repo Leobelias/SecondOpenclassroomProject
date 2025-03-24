@@ -280,3 +280,97 @@ header a{
 	text-decoration: none;
 	color:inherit
 }
+
+.modalesContainer{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100%;
+	width: 100%;
+	z-index: 1000;
+	position: fixed;
+	top: 0;
+	left: 0;
+	background-color: rgba(0, 0, 0, 0.3);
+}
+
+.modaleDelete{
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	background-color: white;
+	border-radius: 10px;
+	width: 50%;
+	height: 800px;
+}
+
+
+.galleryModale{
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+	justify-content: flex-start; 
+	align-content: center;
+	height: 80%;
+	width: 80%;
+	border-bottom: 2px solid #B3B3B3;
+	margin-bottom: 10px;
+}
+
+.galleryModale article{
+	display: inline-block;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+}
+
+.modaleDelete h2{
+	display: flex;
+	font-family: 'Work sans';
+	color: black;
+	font-weight: 400;
+	padding-top: 50px;
+	outline: none;
+}
+
+.galleryModale img{
+	width: 100px;
+	height: auto;
+	padding-bottom: 25px;
+}
+
+.modaleDelete i{
+	position: absolute;
+	top: 80px;
+	right: 400px;
+	font-size: 20px;
+}
+
+.galleryModale i {
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	background-color: black;
+	color: white;
+	padding: 5px;
+	border-radius: 20%;
+    font-size: 10px;
+    cursor: pointer;
+}
+
+.modaleDelete input{
+	display: flex;
+	color: white;
+	font-weight:700;
+	border-radius: 20px;
+	margin: 10px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	padding-right: 40px;
+	padding-left: 40px;
+	border:#1D6154 solid 1.5px;
+	font-family: Syne;
+	background-color: #1D6154;
+	margin: 40px;
+}

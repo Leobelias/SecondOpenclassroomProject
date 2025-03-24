@@ -8,7 +8,6 @@ function login(){
         email: email,
         password: password,
     }
-    console.log(data)
 
     fetch(`${API_BASE_URL}/users/login`, {
         method: 'POST',

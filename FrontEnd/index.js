@@ -12,6 +12,7 @@ function getWorks(){
     .then (works => {
         console.table(works);
         displayWorks(works);
+        displayWorksInModale(works);
         return works;
     })
     .catch ((error) => {console.error(error)})
@@ -71,7 +72,7 @@ function Connected() {
         })
     const loginElement = document.querySelector("nav ul li:nth-child(3)");
     if (loginElement) {
-            loginElement.textContent = "Logoff";
+            loginElement.textContent = "logoff";
             loginElement.style.cursor = "pointer";
 
             loginElement.addEventListener("click", () => {
@@ -80,6 +81,16 @@ function Connected() {
             });
         }
     }
+}
+
+function displayWorksInModale(works) {
+    const galleryModale = document.querySelector('.galleryModale');
+    galleryModale.innerHTML = works.map(work => `
+        <article>
+            <img src="${work.imageUrl}" alt="${work.title}">
+            <i class= "fa-solid fa-trash-can" id="${work.id}"></i>
+        </article>
+    `).join('');
 }
 
 
