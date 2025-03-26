@@ -25,13 +25,19 @@ function getWorks(){
 getCategories();
 
 function getCategories(){
+    const category = document.querySelector('#category')
     return fetch (`${API_BASE_URL}/categories`)
     .then ((response) =>
         response.json())
     .then (categories => {
         console.table(categories);
         displayCategories(categories);
-        return categories;
+
+        category.innerHTML = categories.map(category => `
+            <option value="${category.name}">${category.name}</option>
+            `).join('');
+
+         return categories;
     })
     .catch ((error) => {console.error(error)})
 }
@@ -115,6 +121,8 @@ function displayWorksInModale(works) {
     `).join('');
 }
 
+
+
 function assignEventDelete(allWorks){
     allWorks.forEach(work => {
         const deleteIcon = document.querySelector(`#work-${work.id}`)
@@ -126,9 +134,13 @@ function assignEventDelete(allWorks){
 
 
 function deleteWork(IDWork) {
+    const token = localStorage.getItem("tokenConnexion")
     console.log(`Suppression du work avec ID: ${IDWork}`);
     fetch(`${API_BASE_URL}/works/${IDWork}`, {
         method: 'DELETE',
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
     })
     .then(response => {
         if (!response.ok) {
@@ -145,3 +157,36 @@ function deleteWork(IDWork) {
 }
 
 
+document.addEventListener('DOMContentLoaded', () => {
+    const closeModal = document.querySelectorAll('.modaleDelete .fa-xmark, .modaleAdd .fa-xmark');
+    const modalesContainer = document.querySelector('.modalesContainer');
+
+    closeModal.forEach(closeModal => {
+        closeModal.addEventListener('click', () =>
+            modalesContainer.style.display= 'none',
+    )});
+
+    const openModalDel = document.querySelector('#portfolio span');
+    if (openModalDel) {
+        openModalDel.addEventListener('click', () => {
+            document.querySelector('.modaleAdd').style.display = 'none';
+            document.querySelector('.modaleDelete').style.display = 'flex'
+            document.querySelector('.modalesContainer').style.display = 'flex';
+        } )
+    }
+    const openModalAdd = document.querySelector(".modaleDelete input");
+    if (openModalAdd) {
+        openModalAdd.addEventListener('click', () => {
+            document.querySelector('.modaleAdd').style.display = 'flex';
+            document.querySelector('.modaleDelete').style.display = 'none';
+        })
+    }
+
+    const backDel = document.querySelector(".modaleAdd .fa-arrow-left");
+    if (backDel) {
+        backDel.addEventListener('click', () => {
+            document.querySelector('.modaleAdd').style.display = 'none';
+            document.querySelector('.modaleDelete').style.display = 'flex';
+        })
+    }
+});

@@ -13,7 +13,10 @@
 	<script src="index.js" defer></script>
 </head>
 <body>
+
+
 	<div class="modalesContainer"> 
+
 		<div class="modaleDelete">
 			<i class="fa-solid fa-xmark"></i>
 			<h2>Galerie photo</h2>
@@ -21,6 +24,35 @@
 			</div>
 			<input type="submit" value="Ajouter une photo">
 		</div>
+
+
+		<div class="modaleAdd">
+			<i class="fa-solid fa-arrow-left"></i>
+			<i class="fa-solid fa-xmark"></i>
+			<h2>Ajout photo</h2>
+
+
+			<form action="#" method="post" class="sendimg">
+				<div class="imgexemple">
+					<i class="fa-solid fa-image"></i>
+					<i class="fa-solid fa-plus">   Ajoutez Photo</i>
+					<p>jpg, png • 4mo max</p>
+					<input type="file" id="imageUpload" accept="image/*">
+				</div>
+				<label for="name">Titre</label>
+				<input type="text" name="name" id="name">
+				<h3>Catégorie</h2>
+				<select id="category" name="category">
+					<option value=""></option>
+				</select>
+				<div class="separateur"></div>
+				<button type="submit">Valider</button>
+			</form>
+
+
+		</div>
+
+
 	</div>
 	<div class="editmod">
 		<i class="fa-solid fa-pen-to-square"></i> Mode édition
