@@ -2,7 +2,10 @@ const API_BASE_URL = "http://localhost:5678/api"
 
 
 let allWorks = [];
-getWorks().then(works => { allWorks = works; });
+getWorks().then(works => { 
+    allWorks = works;
+    assignEventDelete(works);
+})
 document.addEventListener("DOMContentLoaded",Connected);
 
 function getWorks(){
@@ -20,7 +23,6 @@ function getWorks(){
     
 }
 getCategories();
-getWorks();
 
 function getCategories(){
     return fetch (`${API_BASE_URL}/categories`)
@@ -46,20 +48,34 @@ function displayWorks(works) {
 
 function displayCategories(categories){
     const portfolio = document.querySelector('.filtres');
+    portfolio.innerHTML = '';
     let allbutton = document.createElement('button');
     allbutton.innerHTML = "Tous";
-    allbutton.addEventListener('click', () => displayWorks(allWorks));
+    allbutton.addEventListener('click', () => {
+        displayWorks(allWorks);
+        activateFilter(allbutton);
+    });
     portfolio.appendChild(allbutton)
-     categories.map(categorie => {
+     categories.forEach(categorie => {
         let button = document.createElement('button');
         button.innerHTML = categorie.name;
         button.addEventListener('click', () => {
             const filteredWorks = allWorks.filter(work => work.categoryId === categorie.id);
             displayWorks(filteredWorks);
+            activateFilter(button);
         });
         portfolio.appendChild(button);
      })
 }
+
+function activateFilter(activebutton) {
+    const buttons = document.querySelectorAll('.filtres button');
+    buttons.forEach(button => {
+        button.classList.remove('filtresactivated');
+    })
+    activebutton.classList.add('filtresactivated');
+}
+
 
 function Connected() {
     const token = localStorage.getItem("tokenConnexion");
@@ -70,9 +86,15 @@ function Connected() {
         document.querySelectorAll(".editbtn, .editbtn i").forEach(element =>  {
             element.style.display= "inline-flex";
         })
+
+        document.querySelectorAll(".filtres").forEach(element => {
+            element.style.display= "none";
+        })
+
+
     const loginElement = document.querySelector("nav ul li:nth-child(3)");
     if (loginElement) {
-            loginElement.textContent = "logoff";
+            loginElement.textContent = "logout";
             loginElement.style.cursor = "pointer";
 
             loginElement.addEventListener("click", () => {
@@ -88,9 +110,38 @@ function displayWorksInModale(works) {
     galleryModale.innerHTML = works.map(work => `
         <article>
             <img src="${work.imageUrl}" alt="${work.title}">
-            <i class= "fa-solid fa-trash-can" id="${work.id}"></i>
+            <i class= "fa-solid fa-trash-can" id="work-${work.id}"></i>
         </article>
     `).join('');
+}
+
+function assignEventDelete(allWorks){
+    allWorks.forEach(work => {
+        const deleteIcon = document.querySelector(`#work-${work.id}`)
+        if (deleteIcon){
+            deleteIcon.addEventListener('click', () => deleteWork(work.id));
+        }
+    })
+}
+
+
+function deleteWork(IDWork) {
+    console.log(`Suppression du work avec ID: ${IDWork}`);
+    fetch(`${API_BASE_URL}/works/${IDWork}`, {
+        method: 'DELETE',
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('La suppression a échoué');
+        }
+        const workToDelete = document.querySelector(`#${workID}`);
+        if (workToDelete) {
+            workToDelete.remove();
+        }
+    })
+    .catch(error => {
+        console.error('Erreur de suppression :', error);
+    });
 }
 
 

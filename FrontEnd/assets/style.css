@@ -207,10 +207,11 @@ footer nav ul {
 	padding-left: 22px;
 	border:#1D6154 solid 1.5px;
 	font-family: Syne;
+	cursor: pointer;
 }
-.filtres button:hover{
+.filtresactivated{
 	background-color: #1D6154;
-	color: white;
+	color: white !important;
 	cursor: pointer;
 }
 
@@ -252,7 +253,7 @@ text-decoration-thickness: 0%;
 	display: none;
 }
 
-.editmod:hover{
+#portfolio span{
 	cursor: pointer;
 }
 
@@ -274,6 +275,12 @@ text-decoration-thickness: 0%;
     color: black;
 	font-weight: 100;
 	display:none;
+}
+
+.erreur{
+	color: red;
+	font-size: 16px;
+	display: none;
 }
 
 header a{
@@ -301,8 +308,8 @@ header a{
 	align-items: center;
 	background-color: white;
 	border-radius: 10px;
-	width: 50%;
-	height: 800px;
+	width: 40%;
+	height: 90%;
 }
 
 
@@ -331,7 +338,6 @@ header a{
 	color: black;
 	font-weight: 400;
 	padding-top: 50px;
-	outline: none;
 }
 
 .galleryModale img{
@@ -343,7 +349,7 @@ header a{
 .modaleDelete i{
 	position: absolute;
 	top: 80px;
-	right: 400px;
+	right: 600px;
 	font-size: 20px;
 }
 

@@ -29,7 +29,9 @@ function login(){
         window.location.href = "index.html";
     } )
 
-    .catch ((error) => {console.error(error)})
+    .catch ((error) => {console.error(error)
+        document.querySelector(".erreur").style.display ="block"
+    })
 }  
 
 function button(){
