@@ -127,7 +127,7 @@ function assignEventDelete(allWorks){
     allWorks.forEach(work => {
         const deleteIcon = document.querySelector(`#work-${work.id}`)
         if (deleteIcon){
-            deleteIcon.addEventListener('click', () => deleteWork(work.id));
+            deleteIcon.addEventListener('click', () => deleteWork(work.id)); 
         }
     })
 }
