@@ -4,7 +4,7 @@ const API_BASE_URL = "http://localhost:5678/api"
 let allWorks = [];
 getWorks().then(works => { 
     allWorks = works;
-    assignEventDelete(works);
+    deleteWork(works);
 })
 document.addEventListener("DOMContentLoaded",Connected);
 
@@ -34,7 +34,7 @@ function getCategories(){
         displayCategories(categories);
 
         category.innerHTML = categories.map(category => `
-            <option value="${category.name}">${category.name}</option>
+            <option value="${category.id}">${category.name}</option>
             `).join('');
 
          return categories;
@@ -116,21 +116,42 @@ function displayWorksInModale(works) {
     galleryModale.innerHTML = works.map(work => `
         <article>
             <img src="${work.imageUrl}" alt="${work.title}">
-            <i class= "fa-solid fa-trash-can" id="work-${work.id}"></i>
-        </article>
-    `).join('');
+            <i class= "fa-solid fa-trash-can" id="${work.id}"></i>
+        </article>`
+    ).join('');
+    const deletebutton = document.querySelectorAll('article i');
+    deletebutton.forEach(button => {
+        button.addEventListener('click', () => {
+            deleteWork(button.id);
+        });
+    });
 }
 
-
-
-function assignEventDelete(allWorks){
-    allWorks.forEach(work => {
-        const deleteIcon = document.querySelector(`#work-${work.id}`)
-        if (deleteIcon){
-            deleteIcon.addEventListener('click', () => deleteWork(work.id)); 
+function deleteWork(IDWork) {
+    const token = localStorage.getItem("tokenConnexion")
+    console.log(`Suppression du work avec ID: ${IDWork}`);
+    fetch(`${API_BASE_URL}/works/${IDWork}`, {
+        method: 'DELETE',
+        headers: {
+            'Authorization': `Bearer ${token}`
         }
     })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('La suppression a échoué');
+        }
+        const workToDelete = document.getElementById(IDWork);
+        if (workToDelete) {
+            workToDelete.parentElement.remove();
+        }
+        getWorks();
+    })
+    .catch(error => {
+        console.error('Erreur de suppression :', error);
+    });
 }
+
+
 
 
 function deleteWork(IDWork) {
@@ -146,9 +167,9 @@ function deleteWork(IDWork) {
         if (!response.ok) {
             throw new Error('La suppression a échoué');
         }
-        const workToDelete = document.querySelector(`#${workID}`);
+        const workToDelete = document.getElementById(IDWork);
         if (workToDelete) {
-            workToDelete.remove();
+            workToDelete.parentElement.remove()
         }
     })
     .catch(error => {
@@ -189,4 +210,86 @@ document.addEventListener('DOMContentLoaded', () => {
             document.querySelector('.modaleDelete').style.display = 'flex';
         })
     }
+});
+
+
+function addWork(formData) {
+    const token = localStorage.getItem("tokenConnexion");
+    
+    fetch(`${API_BASE_URL}/works`, {
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Accept': 'multipart/form-data'
+        },
+        body: formData,
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error ("L'ajout du projet à échoué.");
+        }
+        return response.json();
+    })
+    .then(() => {
+        getWorks();
+        document.querySelector('.modaleAdd').style.display = 'none';
+        document.querySelector('.modaleDelete').style.display = 'flex';
+        alert("Projet ajouté !");
+    })
+    .catch(error => {
+        console.error("Erreur lors de l’ajout :", error);
+        alert("Une erreur est survenue lors de l’ajout du projet.");
+    });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const form = document.querySelector('#addWorkForm');
+
+    if (form) {
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const title = document.querySelector('#name').value.trim();
+            const categoryId = document.querySelector('#category').value;
+            const imageFile = document.querySelector('#imageUpload').files[0];
+
+            if (!title || !categoryId || !imageFile) {
+                alert("Veuillez remplir tous les champs.");
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append("title", title);
+            formData.append("image", imageFile);
+            formData.append("category", categoryId);
+
+            addWork(formData);
+        });
+    }
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    const imageInput = document.querySelector('#imageUpload');
+    const imgPreviewContainer = document.querySelector('.imgexemple');
+
+    imageInput.addEventListener('change', () => {
+        const file = imageInput.files[0];
+
+        if (file && file.type.startsWith('image/')) {
+            const reader = new FileReader();
+
+            reader.onload = (e) => {
+                imgPreviewContainer.innerHTML = '';
+                const img = document.createElement('img');
+                img.src = e.target.result;
+                img.style.maxWidth = '100%';
+                img.style.maxHeight = '100%';
+                imgPreviewContainer.appendChild(img);
+            };
+
+            reader.readAsDataURL(file);
+        } else {
+            imgPreviewContainer.innerHTML = '<p>Format d’image invalide.</p>';
+        }
+    });
 });
