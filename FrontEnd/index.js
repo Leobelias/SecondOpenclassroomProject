@@ -243,7 +243,7 @@ function addWork(formData) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    const form = document.querySelector('#addWorkForm');
+    const form = document.querySelector('#addWorkForm'); 
 
     if (form) {
         form.addEventListener('submit', (e) => {
