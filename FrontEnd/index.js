@@ -5,6 +5,8 @@ let allWorks = [];
 getWorks().then(works => { 
     allWorks = works;
     deleteWork(works);
+    displayWorks(works);
+    displayWorksInModale(works);
 })
 document.addEventListener("DOMContentLoaded",Connected);
 
@@ -272,6 +274,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const imageInput = document.querySelector('#imageUpload');
     const imgPreviewContainer = document.querySelector('.imgexemple');
 
+ 
+    let previewBox = document.querySelector('.previewImage');
+    if (!previewBox) {
+        previewBox = document.createElement('div');
+        previewBox.classList.add('previewImage');
+        previewBox.style.marginTop = '10px';
+        imgPreviewContainer.appendChild(previewBox);
+    }
+
     imageInput.addEventListener('change', () => {
         const file = imageInput.files[0];
 
@@ -279,17 +290,28 @@ document.addEventListener('DOMContentLoaded', () => {
             const reader = new FileReader();
 
             reader.onload = (e) => {
-                imgPreviewContainer.innerHTML = '';
+                previewBox.innerHTML = '';
                 const img = document.createElement('img');
                 img.src = e.target.result;
                 img.style.maxWidth = '100%';
-                img.style.maxHeight = '100%';
-                imgPreviewContainer.appendChild(img);
+                img.style.maxHeight = '150px';
+                img.style.objectFit = 'cover';
+                previewBox.appendChild(img);
             };
 
             reader.readAsDataURL(file);
         } else {
-            imgPreviewContainer.innerHTML = '<p>Format d’image invalide.</p>';
+            previewBox.innerHTML = '<p>Format d’image invalide.</p>';
         }
     });
+});
+
+document.querySelector('#imageUpload').addEventListener('change', function() {
+    const exempleDiv = document.querySelector('.imgexemple');
+
+    if (this.files.length > 0 && this.files[0].type.startsWith('image/')) {
+        exempleDiv.querySelectorAll('i, p').forEach(el => {
+            el.style.display = 'none';
+        });
+    }
 });
