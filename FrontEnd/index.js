@@ -15,7 +15,6 @@ function getWorks(){
     .then ((response) =>
         response.json())
     .then (works => {
-        console.table(works);
         displayWorks(works);
         displayWorksInModale(works);
         return works;
@@ -32,7 +31,6 @@ function getCategories(){
     .then ((response) =>
         response.json())
     .then (categories => {
-        console.table(categories);
         displayCategories(categories);
 
         category.innerHTML = categories.map(category => `
@@ -131,7 +129,6 @@ function displayWorksInModale(works) {
 
 function deleteWork(IDWork) {
     const token = localStorage.getItem("tokenConnexion")
-    console.log(`Suppression du work avec ID: ${IDWork}`);
     fetch(`${API_BASE_URL}/works/${IDWork}`, {
         method: 'DELETE',
         headers: {
@@ -147,32 +144,6 @@ function deleteWork(IDWork) {
             workToDelete.parentElement.remove();
         }
         getWorks();
-    })
-    .catch(error => {
-        console.error('Erreur de suppression :', error);
-    });
-}
-
-
-
-
-function deleteWork(IDWork) {
-    const token = localStorage.getItem("tokenConnexion")
-    console.log(`Suppression du work avec ID: ${IDWork}`);
-    fetch(`${API_BASE_URL}/works/${IDWork}`, {
-        method: 'DELETE',
-        headers: {
-            'Authorization': `Bearer ${token}`
-        }
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('La suppression a échoué');
-        }
-        const workToDelete = document.getElementById(IDWork);
-        if (workToDelete) {
-            workToDelete.parentElement.remove()
-        }
     })
     .catch(error => {
         console.error('Erreur de suppression :', error);
@@ -245,7 +216,22 @@ function addWork(formData) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    const form = document.querySelector('#addWorkForm'); 
+    const form = document.querySelector('#addWorkForm');
+    const submitButton = document.querySelector('#submitButton');
+    
+    function updateSubmitButtonStyle() {
+        const title = document.querySelector('#name').value.trim();
+        const categoryId = document.querySelector('#category').value;
+        const imageFile = document.querySelector('#imageUpload').files[0];
+
+        if (title && categoryId && imageFile) {
+            submitButton.style.backgroundColor = "#1D6154";
+            submitButton.style.color = "#ffffff";
+        } else {
+            submitButton.style.backgroundColor = "";
+            submitButton.style.color = "";
+        }
+    }
 
     if (form) {
         form.addEventListener('submit', (e) => {
@@ -267,6 +253,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
             addWork(formData);
         });
+
+        document.querySelector('#name').addEventListener('input', updateSubmitButtonStyle);
+        document.querySelector('#category').addEventListener('change', updateSubmitButtonStyle);
+        document.querySelector('#imageUpload').addEventListener('change', updateSubmitButtonStyle);
     }
 });
 
