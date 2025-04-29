@@ -15,6 +15,7 @@ function getWorks(){
     .then ((response) =>
         response.json())
     .then (works => {
+        console.table(works);
         displayWorks(works);
         displayWorksInModale(works);
         return works;
@@ -31,6 +32,7 @@ function getCategories(){
     .then ((response) =>
         response.json())
     .then (categories => {
+        console.table(categories);
         displayCategories(categories);
 
         category.innerHTML = categories.map(category => `
@@ -129,6 +131,7 @@ function displayWorksInModale(works) {
 
 function deleteWork(IDWork) {
     const token = localStorage.getItem("tokenConnexion")
+    console.log(`Suppression du work avec ID: ${IDWork}`);
     fetch(`${API_BASE_URL}/works/${IDWork}`, {
         method: 'DELETE',
         headers: {
@@ -149,6 +152,7 @@ function deleteWork(IDWork) {
         console.error('Erreur de suppression :', error);
     });
 }
+
 
 
 document.addEventListener('DOMContentLoaded', () => {
