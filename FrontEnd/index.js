@@ -160,9 +160,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalesContainer = document.querySelector('.modalesContainer');
 
     closeModal.forEach(closeModal => {
-        closeModal.addEventListener('click', () =>
-            modalesContainer.style.display= 'none',
-    )});
+        closeModal.addEventListener('click', () => {
+            document.querySelector('.modaleAdd').style.display = 'none';
+            document.querySelector('.modaleDelete').style.display = 'none';
+            modalesContainer.style.display = 'none';
+            resetImagePreview();
+        });
+    });
 
     const openModalDel = document.querySelector('#portfolio span');
     if (openModalDel) {
@@ -185,6 +189,7 @@ document.addEventListener('DOMContentLoaded', () => {
         backDel.addEventListener('click', () => {
             document.querySelector('.modaleAdd').style.display = 'none';
             document.querySelector('.modaleDelete').style.display = 'flex';
+            resetImagePreview();
         })
     }
 });
@@ -280,9 +285,23 @@ document.addEventListener('DOMContentLoaded', () => {
     imageInput.addEventListener('change', () => {
         const file = imageInput.files[0];
 
-        if (file && file.type.startsWith('image/')) {
+        if (file) {
+            const allowedTypes = ["image/jpeg", "image/png"];
+            const maxSize = 4 * 1024 * 1024;
+        
+            if (!allowedTypes.includes(file.type)) {
+                previewBox.innerHTML = "<p style='color:red;'>Seuls les formats JPEG et PNG sont autorisés.</p>";
+                imageInput.value = "";
+                return;
+            }
+        
+            if (file.size > maxSize) {
+                previewBox.innerHTML = "<p style='color:red;'>L’image dépasse la taille maximale de 4 Mo.</p>";
+                imageInput.value = "";
+                return;
+            }
+        
             const reader = new FileReader();
-
             reader.onload = (e) => {
                 previewBox.innerHTML = '';
                 const img = document.createElement('img');
@@ -292,10 +311,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 img.style.objectFit = 'cover';
                 previewBox.appendChild(img);
             };
-
+        
             reader.readAsDataURL(file);
         } else {
-            previewBox.innerHTML = '<p>Format d’image invalide.</p>';
+            previewBox.innerHTML = "";
         }
     });
 });
@@ -309,3 +328,19 @@ document.querySelector('#imageUpload').addEventListener('change', function() {
         });
     }
 });
+
+
+function resetImagePreview() {
+    const imageInput = document.querySelector('#imageUpload');
+    const previewBox = document.querySelector('.previewImage');
+    const exempleDiv = document.querySelector('.imgexemple');
+
+    if (imageInput) imageInput.value = "";
+    if (previewBox) previewBox.innerHTML = "";
+
+    if (exempleDiv) {
+        exempleDiv.querySelectorAll('i, p').forEach(el => {
+            el.style.display = 'inline';
+        });
+    }
+}
